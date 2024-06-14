@@ -14,3 +14,16 @@ It also supports multiple classes in one shot by separating rules with semicolon
 
 ~twind-insert-css-from-cheatsheet~ command lets you insert CSS rules from the cheatsheet.
 This can be used to replicate the common style in a non-Tailwind project.
+
+It also supports referencing documentation from [[https://tailwindcss.com/docs/][the Tailwind documentation]] and [[https://developer.mozilla.org/en-US/docs/Web/CSS][MDN CSS]].
+If you are using [[https://github.com/oantolin/embark][embark]], you can use the following setup:
+
+#+begin_src elisp
+  (with-eval-after-load 'embark
+    (defvar-keymap twind-css-rule-embark-map
+      :parent embark-general-map
+      :doc "Embark keymap for twind CSS."
+      "d" #'twind-reference-tailwind
+      "m" #'twind-reference-mdn-css)
+    (add-to-list 'embark-keymap-alist '(twind-css-rule . twind-css-rule-embark-map)))
+#+end_src
