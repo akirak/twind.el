@@ -35,10 +35,16 @@
   "Insert Tailwind classes by completing CSS rules."
   (interactive)
   (let ((rules (twind-complete-css-from-cheatsheet "Insert a class for CSS: ")))
+    ;; Prepend with a space to avoid collapsing multiple classes.
+    (when (looking-back (rx (any word)))
+      (insert ?\ ))
     (insert (mapconcat (lambda (rule)
                          (gethash rule twind-cheatsheet-reverse-cache))
                        (cl-remove-duplicates rules :test #'equal)
-                       " "))))
+                       " "))
+    ;; Append a space to avoid collapsing multiple classes.
+    (when (looking-at (rx (any word)))
+      (insert ?\ ))))
 
 ;;;###autoload
 (defun twind-insert-css-from-cheatsheet ()
