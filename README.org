@@ -1,0 +1,16 @@
+* Tailwind Cheatsheet for Emacs
+~twind.el~ is an Emacs frontend to [[https://tailwindcomponents.com/cheatsheet/][the Tailwind CSS Cheat Sheet]].
+Instead of opening the cheatsheet on browser, it lets you enter a class name by typing part of the CSS rule.
+As the original resource says, never memorize something that you can look up.
+
+It doesn't load your ~tailwind.config.js~.
+You can just type your custom Tailwind classes!
+~twind.el~ basically helps you adopt Tailwind.
+If you expect smart completion, you will need a language server.
+** Usage
+~twind-insert-class-from-cheatsheet~ command lets you insert class names by completing the built-in CSS rules of Tailwind.
+You can bind the command in ~web-mode-map~, ~tsx-ts-mode-map~, etc.
+It also supports multiple classes in one shot by separating rules with semicolon (~;~).
+
+~twind-insert-css-from-cheatsheet~ command lets you insert CSS rules from the cheatsheet.
+This can be used to replicate the common style in a non-Tailwind project.
