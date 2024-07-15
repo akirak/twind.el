@@ -30,6 +30,18 @@
 
 (defvar twind-cheatsheet-reverse-cache nil)
 
+(defvar-keymap twind-css-mode-map)
+
+;;;###autoload
+(define-minor-mode twind-css-mode
+  "Minor mode for editing CSS based on a Tailwind theme.")
+
+(defvar-keymap twind-class-mode-map)
+
+;;;###autoload
+(define-minor-mode twind-class-mode
+  "Minor mode for editing components with Tailwind classes.")
+
 ;;;###autoload
 (defun twind-insert-class-from-cheatsheet ()
   "Insert Tailwind classes by completing CSS rules."
