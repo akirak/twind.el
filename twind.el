@@ -32,7 +32,12 @@
 
 ;;; Code:
 
+(require 'cl-lib)
+(require 'subr-x)
 (require 'map)
+
+(defvar url-http-end-of-headers)
+(defvar crm-separator)
 
 (defgroup twind nil
   "Complete Tailwind classes using the Cheatsheet data."
@@ -80,7 +85,7 @@
   (interactive)
   (let ((rules (twind-complete-css-from-cheatsheet "Insert a class for CSS: ")))
     ;; Prepend with a space to avoid collapsing multiple classes.
-    (when (looking-back (rx (any word)))
+    (when (looking-back (rx (any word)) (line-beginning-position))
       (insert ?\ ))
     (insert (mapconcat (lambda (rule)
                          (gethash rule twind-cheatsheet-reverse-cache))
@@ -145,8 +150,7 @@
       (dolist (parent-group doc)
         (let ((parent-group-title (alist-get 'title parent-group)))
           (dolist (subgroup (alist-get 'content parent-group))
-            (let* ((subgroup-title (alist-get 'title subgroup))
-                   (description (alist-get 'description subgroup))
+            (let* ((description (alist-get 'description subgroup))
                    (docs (alist-get 'docs subgroup))
                    ;; (group (format "%s > %s" parent-group-title subgroup-title))
                    (group parent-group-title))
