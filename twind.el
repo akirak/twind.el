@@ -4,7 +4,7 @@
 
 ;; Author: Akira Komamura <akira.komamura@gmail.com>
 ;; Version: 0.1
-;; Package-Requires: ((emacs "26.1"))
+;; Package-Requires: ((emacs "29.1"))
 ;; Keywords: convenience
 ;; URL: https://github.com/akirak/twind.el
 
