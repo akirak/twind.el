@@ -4,9 +4,9 @@ Instead of opening the cheatsheet on browser, it lets you enter a class name by 
 As the original resource says, never memorize something that you can look up.
 
 It doesn't load your ~tailwind.config.js~.
-If you have defined a custom theme, you can just type the CSS classes!
-~twind.el~ is intended to help with initial adoption of Tailwind, but not beyond that.
-If you want smart completion for your own Tailwind theme, you will need a language server (like [[https://www.npmjs.com/package/@tailwindcss/language-server][this one]]).
+If you have defined a custom theme, you can just type its CSS classes!
+~twind.el~ is only aimed at helping with initial adoption of Tailwind.
+If you want smart completion for your own Tailwind theme, you will need a language server such as [[https://www.npmjs.com/package/@tailwindcss/language-server][this one]].
 ** Usage
 ~twind-insert-class-from-cheatsheet~ command lets you insert class names by completing the built-in CSS rules of Tailwind.
 You can bind the command in ~web-mode-map~, ~tsx-ts-mode-map~, etc.
