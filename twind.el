@@ -65,6 +65,147 @@
   :options '(browse-url
              eww))
 
+(defcustom twind-extra-class-alist
+  ;; Based on https://tailwindcss.com/docs/hover-focus-and-other-states#quick-reference
+  (eval-when-compile
+    (mapcar (lambda (ent)
+              (append ent
+                      '(doc-url "https://tailwindcss.com/docs/hover-focus-and-other-states")))
+            '(("hover:" "@media (hover: hover) { &:hover }")
+              ("focus:" "&:focus")
+              ("focus-within:" "&:focus-within")
+              ("focus-visible:" "&:focus-visible")
+              ("active:" "&:active")
+              ("visited:" "&:visited")
+              ("target:" "&:target")
+              ("*:" ":is(& > *)")
+              ("**:" ":is(& *)")
+              ("has-[...]:" "&:has(...)")
+              ("group-[...]:" "&:is(:where(.group)... *)")
+              ("peer-[...]:" "&:is(:where(.peer)... ~ *)")
+              ("in-[...]:" ":where(...) &")
+              ("not-[...]:" "&:not(...)")
+              ("inert:" "&:is([inert], [inert] *)")
+              ("first:" "&:first-child")
+              ("last:" "&:last-child")
+              ("only:" "&:only-child")
+              ("odd:" "&:nth-child(odd)")
+              ("even:" "&:nth-child(even)")
+              ("first-of-type:" "&:first-of-type")
+              ("last-of-type:" "&:last-of-type")
+              ("only-of-type:" "&:only-of-type")
+              ("nth-[...]:" "&:nth-child(...)")
+              ("nth-last-[...]:" "&:nth-last-child(...)")
+              ("nth-of-type-[...]:" "&:nth-of-type(...)")
+              ("nth-last-of-type-[...]:" "&:nth-last-of-type(...)")
+              ("empty:" "&:empty")
+              ("disabled:" "&:disabled")
+              ("enabled:" "&:enabled")
+              ("checked:" "&:checked")
+              ("indeterminate:" "&:indeterminate")
+              ("default:" "&:default")
+              ("optional:" "&:optional")
+              ("required:" "&:required")
+              ("valid:" "&:valid")
+              ("invalid:" "&:invalid")
+              ("in-range:" "&:in-range")
+              ("out-of-range:" "&:out-of-range")
+              ("placeholder-shown:" "&:placeholder-shown")
+              ("autofill:" "&:autofill")
+              ("read-only:" "&:read-only")
+              ("before:" "&::before")
+              ("after:" "&::after")
+              ("first-letter:" "&::first-letter")
+              ("first-line:" "&::first-line")
+              ("marker:" "&::marker, & *::marker")
+              ("selection:" "&::selection")
+              ("file:" "&::file-selector-button")
+              ("backdrop:" "&::backdrop")
+              ("placeholder:" "&::placeholder")
+              ("sm:" "@media (width >= 40rem)")
+              ("md:" "@media (width >= 48rem)")
+              ("lg:" "@media (width >= 64rem)")
+              ("xl:" "@media (width >= 80rem)")
+              ("2xl:" "@media (width >= 96rem)")
+              ("min-[...]:" "@media (width >= ...)")
+              ("max-sm:" "@media (width < 40rem)")
+              ("max-md:" "@media (width < 48rem)")
+              ("max-lg:" "@media (width < 64rem)")
+              ("max-xl:" "@media (width < 80rem)")
+              ("max-2xl:" "@media (width < 96rem)")
+              ("max-[...]:" "@media (width < ...)")
+              ("@3xs:" "@container (width >= 16rem)")
+              ("@2xs:" "@container (width >= 18rem)")
+              ("@xs:" "@container (width >= 20rem)")
+              ("@sm:" "@container (width >= 24rem)")
+              ("@md:" "@container (width >= 28rem)")
+              ("@lg:" "@container (width >= 32rem)")
+              ("@xl:" "@container (width >= 36rem)")
+              ("@2xl:" "@container (width >= 42rem)")
+              ("@3xl:" "@container (width >= 48rem)")
+              ("@4xl:" "@container (width >= 56rem)")
+              ("@5xl:" "@container (width >= 64rem)")
+              ("@6xl:" "@container (width >= 72rem)")
+              ("@7xl:" "@container (width >= 80rem)")
+              ("@min-[...]:" "@container (width >= ...)")
+              ("@max-3xs:" "@container (width < 16rem)")
+              ("@max-2xs:" "@container (width < 18rem)")
+              ("@max-xs:" "@container (width < 20rem)")
+              ("@max-sm:" "@container (width < 24rem)")
+              ("@max-md:" "@container (width < 28rem)")
+              ("@max-lg:" "@container (width < 32rem)")
+              ("@max-xl:" "@container (width < 36rem)")
+              ("@max-2xl:" "@container (width < 42rem)")
+              ("@max-3xl:" "@container (width < 48rem)")
+              ("@max-4xl:" "@container (width < 56rem)")
+              ("@max-5xl:" "@container (width < 64rem)")
+              ("@max-6xl:" "@container (width < 72rem)")
+              ("@max-7xl:" "@container (width < 80rem)")
+              ("@max-[...]:" "@container (width < ...)")
+              ("dark:" "@media (prefers-color-scheme: dark)")
+              ("portrait:" "@media (orientation: portrait)")
+              ("landscape:" "@media (orientation: landscape)")
+              ("motion-safe:" "@media (prefers-reduced-motion: no-preference)")
+              ("motion-reduce:" "@media (prefers-reduced-motion: reduce)")
+              ("contrast-more:" "@media (prefers-contrast: more)")
+              ("contrast-less:" "@media (prefers-contrast: less)")
+              ("print:" "@media print")
+              ("supports-[...]:" "@supports (…)")
+              ("aria-busy:" "&[aria-busy=\"true\"]")
+              ("aria-checked:" "&[aria-checked=\"true\"]")
+              ("aria-disabled:" "&[aria-disabled=\"true\"]")
+              ("aria-expanded:" "&[aria-expanded=\"true\"]")
+              ("aria-hidden:" "&[aria-hidden=\"true\"]")
+              ("aria-pressed:" "&[aria-pressed=\"true\"]")
+              ("aria-readonly:" "&[aria-readonly=\"true\"]")
+              ("aria-required:" "&[aria-required=\"true\"]")
+              ("aria-selected:" "&[aria-selected=\"true\"]")
+              ("aria-[...]:" "&[aria-…]")
+              ("data-[...]:" "&[data-...]")
+              ("rtl:" "[dir=\"rtl\"] &")
+              ("ltr:" "[dir=\"ltr\"] &")
+              ("open:" "&:is([open], :popover-open)")
+              ("forced-colors:" "@media (forced-colors: active)")
+              ("starting:" "@starting-style"))))
+  "List of extra static entries for completion.
+
+Each entry should take the form (CLASS DEFINITION . PLIST) where PLIST
+is a list of properties for completion. The list of supported properties are:
+
+  * doc-url: The documentation URL.
+
+  * description: A description of the definition.
+
+This is used for completing a Tailwind class from its definition, but
+not the other way around. It is mostly intended for supporting pseudo
+classes of Tailwind. See
+<https://tailwindcss.com/docs/hover-focus-and-other-states#pseudo-classes>
+for their definitions.
+
+Please ensure pseudo classes are suffixed with a colon (\":\")."
+  :type '(alist :key-type string
+                :value-type string))
+
 (defvar twind-cheatsheet-reverse-cache nil)
 
 (defvar-keymap twind-css-mode-map)
@@ -83,17 +224,21 @@
 (defun twind-insert-class-from-cheatsheet ()
   "Insert Tailwind classes by completing CSS rules."
   (interactive)
-  (let ((rules (twind-complete-css-from-cheatsheet "Insert a class for CSS: ")))
+  (let ((rules (twind-complete-css-from-cheatsheet "Insert the class for CSS: ")))
     ;; Prepend with a space to avoid collapsing multiple classes.
-    (when (looking-back (rx (any word)) (line-beginning-position))
+    (when (and (not (twind--pseudo-class-p (car rules)))
+               (looking-back (rx (any word)) (line-beginning-position)))
       (insert ?\ ))
     (insert (mapconcat (lambda (rule)
-                         (gethash rule twind-cheatsheet-reverse-cache))
+                         (let ((class (gethash rule twind-cheatsheet-reverse-cache)))
+                           (concat class
+                                   (unless (twind--pseudo-class-p class)
+                                     " "))))
                        (cl-remove-duplicates rules :test #'equal)
-                       " "))
-    ;; Append a space to avoid collapsing multiple classes.
-    (when (looking-at (rx (any word)))
-      (insert ?\ ))))
+                       ""))))
+
+(defun twind--pseudo-class-p (class)
+  (string-suffix-p ":" class))
 
 ;;;###autoload
 (defun twind-insert-css-from-cheatsheet ()
@@ -173,7 +318,15 @@
                     ;; Ignore colors
                     ((and `(,_ ,_class ,definition)
                           (guard (string-suffix-p ";" definition))))
-                    (`("container" ,_ ,_))))))))))))
+                    (`("container" ,_ ,_)))))))))
+      (cl-flet
+          ((add-rule (class definition properties)
+             (set-text-properties 0 1 properties definition)
+             (puthash definition class twind-cheatsheet-reverse-cache)))
+        (dolist (rule twind-extra-class-alist)
+          (pcase-exhaustive rule
+            (`(,class ,definition . ,plist)
+             (add-rule class definition (append plist '(group "extras"))))))))))
 
 (defun twind-reference-mdn-css (css-rule)
   "Look up the CSS property on MDN."
