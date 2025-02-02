@@ -36,6 +36,7 @@
 (require 'subr-x)
 (require 'map)
 (require 'skeleton)
+(require 'thingatpt)
 
 (defvar url-http-end-of-headers)
 (defvar crm-separator)
@@ -248,7 +249,9 @@ be replaced with a user input using skeleton."
                                                    (list class))
                                                  (unless (twind--pseudo-class-p class)
                                                    '(" ")))))
-                                     (cl-remove-duplicates rules :test #'equal)))))))
+                                     (cl-remove-duplicates rules :test #'equal)))))
+    (when (thing-at-point-looking-at (rx (+ blank)))
+      (replace-match " "))))
 
 (defun twind--pseudo-class-p (class)
   (string-suffix-p ":" class))
