@@ -35,6 +35,7 @@
 (require 'cl-lib)
 (require 'subr-x)
 (require 'map)
+(require 'skeleton)
 
 (defvar url-http-end-of-headers)
 (defvar crm-separator)
@@ -202,7 +203,10 @@ classes of Tailwind. See
 <https://tailwindcss.com/docs/hover-focus-and-other-states#pseudo-classes>
 for their definitions.
 
-Please ensure pseudo classes are suffixed with a colon (\":\")."
+Please ensure pseudo classes are suffixed with a colon (\":\").
+
+If three consecutive dots (\"...\") are included in the class, it will
+be replaced with a user input using skeleton."
   :type '(alist :key-type string
                 :value-type string))
 
@@ -229,13 +233,21 @@ Please ensure pseudo classes are suffixed with a colon (\":\")."
     (when (and (not (twind--pseudo-class-p (car rules)))
                (looking-back (rx (any word)) (line-beginning-position)))
       (insert ?\ ))
-    (insert (mapconcat (lambda (rule)
-                         (let ((class (gethash rule twind-cheatsheet-reverse-cache)))
-                           (concat class
-                                   (unless (twind--pseudo-class-p class)
-                                     " "))))
-                       (cl-remove-duplicates rules :test #'equal)
-                       ""))))
+    (let ((skeleton-end-newline nil))
+      (skeleton-insert (cons `nil
+                             (mapcan (lambda (rule)
+                                       (let ((class (gethash rule twind-cheatsheet-reverse-cache)))
+                                         (append (if (string-match (regexp-quote "...") class)
+                                                     (list (substring class 0 (match-beginning 0))
+                                                           `(read-string
+                                                             ,(concat
+                                                               "Format the inner content of "
+                                                               rule ": "))
+                                                           (substring class (match-end 0)))
+                                                   (list class))
+                                                 (unless (twind--pseudo-class-p class)
+                                                   '(" ")))))
+                                     (cl-remove-duplicates rules :test #'equal)))))))
 
 (defun twind--pseudo-class-p (class)
   (string-suffix-p ":" class))
