@@ -68,6 +68,7 @@
 
 (defcustom twind-extra-class-alist
   ;; Based on https://tailwindcss.com/docs/hover-focus-and-other-states#quick-reference
+  ;; TODO: Automate updating of this definition
   (eval-when-compile
     (mapcar (lambda (ent)
               (append ent
