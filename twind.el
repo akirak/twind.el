@@ -251,7 +251,9 @@ be replaced with a user input using skeleton."
                                                    '(" ")))))
                                      (cl-remove-duplicates rules :test #'equal)))))
     (when (thing-at-point-looking-at (rx (+ blank)))
-      (replace-match " "))))
+      (if (= 119 (char-syntax (char-after)))
+          (replace-match " ")
+        (replace-match "")))))
 
 (defun twind--pseudo-class-p (class)
   (string-suffix-p ":" class))
