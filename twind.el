@@ -232,7 +232,7 @@ be replaced with a user input using skeleton."
   (interactive)
   (let ((rules (twind-complete-css-from-cheatsheet "Insert the class for CSS: ")))
     ;; Prepend with a space to avoid collapsing multiple classes.
-    (when (and (not (twind--pseudo-class-p (car rules)))
+    (when (and (not (twind--pseudo-class-p (gethash (car rules) twind-cheatsheet-reverse-cache)))
                (looking-back (rx (any word)) (line-beginning-position)))
       (insert ?\ ))
     (let ((skeleton-end-newline nil))
@@ -251,9 +251,11 @@ be replaced with a user input using skeleton."
                                                    '(" ")))))
                                      (cl-remove-duplicates rules :test #'equal)))))
     (when (thing-at-point-looking-at (rx (+ blank)))
-      (if (= 119 (char-syntax (char-after)))
-          (replace-match " ")
-        (replace-match "")))))
+      (replace-match ""))
+    (when (and (= 119 (char-syntax (char-after)))
+               (not (twind--pseudo-class-p (gethash (car (last rules))
+                                                    twind-cheatsheet-reverse-cache))))
+      (insert-char ?\s))))
 
 (defun twind--pseudo-class-p (class)
   (string-suffix-p ":" class))
