@@ -281,7 +281,7 @@ be replaced with a user input using skeleton."
                  " {" n
                  > _ n
                  ,unindent "}"))
-        (insert rule "\n")))))
+        (insert rule ";\n")))))
 
 (defun twind-complete-css-from-cheatsheet (prompt)
   "Complete CSS rules from the cheatsheet."
