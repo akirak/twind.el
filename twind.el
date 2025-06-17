@@ -264,11 +264,24 @@ be replaced with a user input using skeleton."
 (defun twind-insert-css-from-cheatsheet ()
   "Insert CSS rules built into Tailwind."
   (interactive)
-  (let ((rules (twind-complete-css-from-cheatsheet "Insert CSS: ")))
-    (insert (mapconcat (lambda (rule)
-                         (concat rule ";"))
-                       (cl-remove-duplicates rules :test #'equal)
-                       "\n"))))
+  (dolist (rule (cl-remove-duplicates
+                 (twind-complete-css-from-cheatsheet "Insert CSS: ")
+                 :test #'equal))
+    (let ((skeleton-end-newline t)
+          (unindent (- css-indent-offset))
+          (class (gethash rule twind-cheatsheet-reverse-cache)))
+      (if (twind--pseudo-class-p class)
+          (skeleton-insert
+           `(nil ,@(if (string-match (regexp-quote "...") rule)
+                       (list (substring rule 0 (match-beginning 0))
+                             `(read-string ,(concat "Format the parameter in "
+                                                    rule ": "))
+                             (substring rule (match-end 0)))
+                     (list rule))
+                 " {" n
+                 > _ n
+                 ,unindent "}"))
+        (insert rule "\n")))))
 
 (defun twind-complete-css-from-cheatsheet (prompt)
   "Complete CSS rules from the cheatsheet."
